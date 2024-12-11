@@ -2,6 +2,7 @@
 import json
 from typing import List, Optional
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chat_api_client import ChatAPIClient, ChatCompletionRequest, Message
 from faq_finder import FAQFinder, FAQItem
@@ -25,6 +26,21 @@ app = FastAPI(
     title="FAQ API",
     description="An API to answer known questions.",
     version="1.0.0"
+)
+
+origins = [
+    "null", 
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://myfrontendapp.com"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autoriser uniquement les origines spécifiées
+    allow_credentials=True,  # Autoriser les cookies
+    allow_methods=["*"],  # Autoriser toutes les méthodes : GET, POST, PUT, DELETE, etc.
+    allow_headers=["*"],  # Autoriser tous les headers
 )
 
 faq_finder = FAQFinder(faq_dataset)
@@ -70,7 +86,7 @@ async def faq_chatbot_chat(prompt: str) -> str:
     return result
     
 @app.post("/faq-optimized-chatbot/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
-async def faq_optimized_chatbot_chat(prompt: str) -> str:
+async def faq_optimized_chatbot_chat(prompt: str ) -> str:
     faq_similars_dataset = await faq_similars(prompt)
     faq_similars_dataset_json = json.dumps(faq_similars_dataset, indent=4)
     patterns = [
