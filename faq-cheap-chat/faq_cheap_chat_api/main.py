@@ -19,7 +19,7 @@ with open('dataset/faq.json', 'r', encoding='utf-8') as f2:
     faq_dataset_raw_txt = f2.read()
 
 
-with open('dataset/support_preprompt_v3.md', 'r', encoding='utf-8') as f3:
+with open('dataset/support_preprompt_v4.md', 'r', encoding='utf-8') as f3:
     support_preprompt_raw_txt = f3.read()
 
 app = FastAPI(
@@ -75,7 +75,7 @@ async def llm_chat(prompt: str) -> str:
     str_response = chat_result.choices[0].message.content
     return str_response
 
-@app.post("/faq-chatbot/chat", summary="Chat with your FAQ ChatBot", tags=["AI"])
+@app.post("/faq-chatbot/with-full-dataset-preprompt/chat", summary="Chat with your FAQ ChatBot", tags=["AI"])
 async def faq_chatbot_chat(prompt: str) -> str:
     patterns = [
         (r"((MY_FAQ_JSON_DATASET))", faq_dataset_raw_txt),
@@ -84,8 +84,8 @@ async def faq_chatbot_chat(prompt: str) -> str:
     enhanced_prompt = prompter.replace_patterns_in_prompt(support_preprompt_raw_txt, patterns)
     result = await llm_chat(enhanced_prompt)
     return result
-    
-@app.post("/faq-optimized-chatbot/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
+
+@app.post("/faq-chatbot//with-optimized-dataset-preprompt/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
 async def faq_optimized_chatbot_chat(prompt: str ) -> str:
     faq_similars_dataset = await faq_similars(prompt)
     faq_similars_dataset_json = json.dumps(faq_similars_dataset, indent=4)

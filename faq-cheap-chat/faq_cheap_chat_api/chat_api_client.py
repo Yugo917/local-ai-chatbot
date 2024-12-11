@@ -47,7 +47,7 @@ class ChatAPIClient:
         response = await client.post(
             f"{self.base_url}/v1/chat/completions",
             json=payload.dict(),
-            timeout=10.0,
+            timeout=30.0,
         )
         response.raise_for_status()  # Gestion des erreurs HTTP
         response = ChatCompletionResponse(**response.json())
