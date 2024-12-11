@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "$HOME/.cache/pypoetry/virtualenvs/nom-du-projet-py3.x/bin/python",
+    "python.venvPath": "$HOME/.cache/pypoetry/virtualenvs",
+    "python.analysis.extraPaths": [
+        "$HOME/.cache/pypoetry/virtualenvs/nom-du-projet-py3.x/lib/python3.x/site-packages"
+    ]
+}
