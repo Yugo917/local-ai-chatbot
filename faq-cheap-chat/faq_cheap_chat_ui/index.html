@@ -48,9 +48,15 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 h-screen flex justify-center items-center">
+<body class="bg-gray-100 h-screen flex">
+  <!-- Sidebar Navigation -->
+  <div class="w-1/5 bg-gray-200 p-4 flex flex-col space-y-4">
+    <button id="chatbot1-btn" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">Chatbot Full</button>
+    <button id="chatbot2-btn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Chatbot Optimized</button>
+  </div>
+
   <!-- Chat Container -->
-  <div class="bg-white shadow-lg rounded-lg w-full max-w-md h-[90vh] flex flex-col">
+  <div class="bg-white shadow-lg rounded-lg w-4/5 h-[90vh] flex flex-col">
     <!-- Header -->
     <div class="bg-green-500 text-white p-4 font-bold text-lg">
       Chatbot Interface
@@ -77,8 +83,12 @@
     const chatBox = document.getElementById('chat-box');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-btn');
-    const API_URL = 'http://127.0.0.1:8000/faq-chatbot/with-full-dataset-preprompt/chat?prompt=';
+    const chatbot1Btn = document.getElementById('chatbot1-btn');
+    const chatbot2Btn = document.getElementById('chatbot2-btn');
     let typingIndicator;
+
+    // Default API URL
+    let API_URL = 'http://127.0.0.1:8000/faq-chatbot/with-full-dataset-preprompt/chat?prompt=';
 
     // Configure marked to honor line breaks
     marked.setOptions({
@@ -148,6 +158,17 @@
         appendMessage('bot', "An error occurred. Please try again.");
       }
     }
+
+    // Change API URL based on chatbot selection
+    chatbot1Btn.addEventListener('click', () => {
+      API_URL = 'http://127.0.0.1:8000/faq-chatbot/with-full-dataset-preprompt/chat?prompt=';
+      appendMessage('bot', 'Switched to /faq-chatbot/with-full-dataset-preprompt/chat');
+    });
+
+    chatbot2Btn.addEventListener('click', () => {
+        API_URL = 'http://127.0.0.1:8000/faq-chatbot/with-optimized-dataset-preprompt/chat?prompt=';
+      appendMessage('bot', 'Switched to /faq-chatbot/with-optimized-dataset-preprompt/chat');
+    });
 
     // Event Listener for send button
     sendButton.addEventListener('click', sendMessage);

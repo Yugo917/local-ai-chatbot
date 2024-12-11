@@ -78,20 +78,20 @@ async def llm_chat(prompt: str) -> str:
 @app.post("/faq-chatbot/with-full-dataset-preprompt/chat", summary="Chat with your FAQ ChatBot", tags=["AI"])
 async def faq_chatbot_chat(prompt: str) -> str:
     patterns = [
-        (r"((MY_FAQ_JSON_DATASET))", faq_dataset_raw_txt),
-        (r"((MY_QUESTION))", prompt),
+        ("MY_FAQ_JSON_DATASET", faq_dataset_raw_txt),
+        ("MY_QUESTION", prompt),
     ]
     enhanced_prompt = prompter.replace_patterns_in_prompt(support_preprompt_raw_txt, patterns)
     result = await llm_chat(enhanced_prompt)
     return result
 
-@app.post("/faq-chatbot//with-optimized-dataset-preprompt/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
+@app.post("/faq-chatbot/with-optimized-dataset-preprompt/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
 async def faq_optimized_chatbot_chat(prompt: str ) -> str:
     faq_similars_dataset = await faq_similars(prompt)
     faq_similars_dataset_json = json.dumps(faq_similars_dataset, indent=4)
     patterns = [
-        (r"((MY_FAQ_JSON_DATASET))", faq_similars_dataset_json),
-        (r"((MY_QUESTION))", prompt),
+        ("MY_FAQ_JSON_DATASET", faq_similars_dataset_json),
+        ("MY_QUESTION", prompt),
     ]
     enhanced_prompt = prompter.replace_patterns_in_prompt(support_preprompt_raw_txt, patterns)
     result = await llm_chat(enhanced_prompt)
