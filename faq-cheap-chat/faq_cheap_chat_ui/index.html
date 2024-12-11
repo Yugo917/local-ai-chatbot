@@ -19,6 +19,33 @@
     #chat-box li {
       margin-bottom: 0.25rem;
     }
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background-color: #ccc;
+      border-radius: 50%;
+      animation: bounce 1s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+      }
+      40% {
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-100 h-screen flex justify-center items-center">
@@ -51,6 +78,7 @@
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-btn');
     const API_URL = 'http://127.0.0.1:8000/faq-optimized-chatbot/chat?prompt=';
+    let typingIndicator;
 
     // Configure marked to honor line breaks
     marked.setOptions({
@@ -72,6 +100,27 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    // Function to show typing indicator
+    function showTypingIndicator() {
+      typingIndicator = document.createElement('div');
+      typingIndicator.classList.add('typing-indicator', 'p-2', 'rounded-lg', 'bg-gray-200', 'inline-flex');
+      typingIndicator.innerHTML = `
+        <span></span>
+        <span></span>
+        <span></span>
+      `;
+      chatBox.appendChild(typingIndicator);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Function to remove typing indicator
+    function removeTypingIndicator() {
+      if (typingIndicator) {
+        chatBox.removeChild(typingIndicator);
+        typingIndicator = null;
+      }
+    }
+
     // Function to send message to API
     async function sendMessage() {
       const userMessage = userInput.value.trim();
@@ -81,16 +130,21 @@
       appendMessage('user', userMessage);
       userInput.value = '';
 
+      // Show typing indicator
+      showTypingIndicator();
+
       try {
         const response = await fetch(`${API_URL}${encodeURIComponent(userMessage)}`,{ method: 'POST', headers: { 'Content-Type': 'application/json' }, });
         const data = await response.json();
         console.log('data', data);
         const botMessage = data || "No response found.";
         
-        // Add bot's response to chat box
+        // Remove typing indicator and add bot's response
+        removeTypingIndicator();
         appendMessage('bot', botMessage);
       } catch (error) {
         console.error('API Error:', error);
+        removeTypingIndicator();
         appendMessage('bot', "An error occurred. Please try again.");
       }
     }
