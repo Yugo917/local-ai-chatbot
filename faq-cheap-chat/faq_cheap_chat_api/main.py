@@ -10,15 +10,15 @@ import requests
 from prompter import Prompter
 
 # Load FAQ datas
-with open('faq.json', 'r') as f:
+with open('dataset/faq.json', 'r') as f:
     faq_dataset_raw_json = json.load(f)  
     faq_dataset = [FAQItem(**item) for item in faq_dataset_raw_json]  
 
-with open('faq.json', 'r', encoding='utf-8') as f2:
+with open('dataset/faq.json', 'r', encoding='utf-8') as f2:
     faq_dataset_raw_txt = f2.read()
 
 
-with open('support_preprompt_v3.md', 'r', encoding='utf-8') as f3:
+with open('dataset/support_preprompt_v3.md', 'r', encoding='utf-8') as f3:
     support_preprompt_raw_txt = f3.read()
 
 app = FastAPI(
