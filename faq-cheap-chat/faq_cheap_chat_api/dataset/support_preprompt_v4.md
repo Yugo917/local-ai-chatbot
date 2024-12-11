@@ -1,7 +1,7 @@
 **Instruction 1**  
 Keep in your memory this support corpus :
 
-((MY_FAQ_JSON_DATASET))
+MY_FAQ_JSON_DATASET
 
 ---
 
@@ -19,4 +19,4 @@ Keep in your memory this support corpus :
 ---
 
 **Question**  
-((MY_QUESTION))
+MY_QUESTION
