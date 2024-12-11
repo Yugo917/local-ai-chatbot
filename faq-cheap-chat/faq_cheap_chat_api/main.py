@@ -81,7 +81,7 @@ async def faq_chatbot_chat(prompt: str) -> str:
         ("MY_FAQ_JSON_DATASET", faq_dataset_raw_txt),
         ("MY_QUESTION", prompt),
     ]
-    enhanced_prompt = prompter.replace_patterns_in_prompt(support_preprompt_raw_txt, patterns)
+    enhanced_prompt = prompter.replace_patterns(support_preprompt_raw_txt, patterns)
     result = await llm_chat(enhanced_prompt)
     return result
 
@@ -93,9 +93,16 @@ async def faq_optimized_chatbot_chat(prompt: str ) -> str:
         ("MY_FAQ_JSON_DATASET", faq_similars_dataset_json),
         ("MY_QUESTION", prompt),
     ]
-    enhanced_prompt = prompter.replace_patterns_in_prompt(support_preprompt_raw_txt, patterns)
+    enhanced_prompt = prompter.replace_patterns(support_preprompt_raw_txt, patterns)
     result = await llm_chat(enhanced_prompt)
     return result
+
+@app.post("/faq-chatbot/faq-finder/chat", summary="Chat with your optimized FAQ ChatBot", tags=["AI"])
+async def faq_finder_chat(prompt: str ) -> str:
+    similar_faq_item = faq_finder.find_similar_faq_items_by_model(prompt,0.2,1)
+    faq_similars_dataset_json = json.dumps(similar_faq_item, indent=4)
+    return faq_similars_dataset_json
+
 
 # Automatic Swagger documentation is available at /docs
 # OpenAPI schema can be accessed at /openapi.json
