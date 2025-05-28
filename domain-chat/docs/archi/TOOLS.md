@@ -1,22 +1,22 @@
-### 🧠 1. API Centrale : `DataToolApi`
+### 🧠 1. Central API: `DataToolApi`
 
-Le composant `DataToolApi` centralise les opérations de transformation et d’enrichissement des données. Il agit comme une couche d’orchestration qui délègue les traitements à deux modules spécialisés : `DataConverter` pour la transformation des formats et `EmbeddingsCreator` pour la vectorisation sémantique.
+The `DataToolApi` component centralizes all data transformation and enrichment operations. It acts as an orchestration layer, delegating tasks to two specialized modules: `DataConverter` for format transformation and `EmbeddingsCreator` for semantic vectorization.
 
 ---
 
-### 🧱 2. `EmbeddingsCreator` : Génération d’Embeddings
+### 🧱 2. `EmbeddingsCreator`: Embedding Generation
 
-Le module `EmbeddingsCreator` transforme des données textuelles enrichies en vecteurs (embeddings) exploitables par des modèles IA.
-Exemples d’entrées :
+The `EmbeddingsCreator` module transforms enriched textual data into vector embeddings that can be used by AI models.
+Example input types:
 
 * `datachunk-to-embeddings`
 * `faq-to-embeddings`
 
-Chaque entrée est vectorisée avec des métadonnées riches (document ID, section, langue, tags, timestamp…) pour un usage optimal en moteur de recherche sémantique ou chatbot.
+Each input is vectorized along with rich metadata (document ID, section, language, tags, timestamp...) for optimal use in semantic search engines or chatbots.
 
 ```json
 {
-  "text": "Assurez-vous que votre ordinateur répond à la configuration minimale...",
+  "text": "Make sure your computer meets the minimum requirements...",
   "embedding": [0.123, 0.456, 0.789, ...],
   "metadata": {
     "document_id": "doc-001",
@@ -28,19 +28,18 @@ Chaque entrée est vectorisée avec des métadonnées riches (document ID, secti
 
 ---
 
-### 🔁 3. `DataConverter` : Transformation de Données
+### 🔁 3. `DataConverter`: Data Transformation
 
-Ce module a pour rôle de convertir des données brutes (markdown, Word, images, discussions) en segments exploitables (`datachunks` ou FAQ). Il propose aussi la génération de données d’entraînement à partir des mêmes sources.
+This module converts raw data sources (Markdown, Word, images, conversations) into usable segments (`datachunks` or FAQs). It can also generate training datasets from the same sources.
 
 ---
 
-### 🔗 4. Synergie et Pipeline
+### 🔗 4. Synergy and Pipeline
 
-L’ensemble forme une chaîne fonctionnelle complète :
+Together, the components form a fully functional processing chain:
 
-1. `DataConverter` transforme les sources brutes en `datachunks`.
-2. `EmbeddingsCreator` enrichit ces chunks avec des vecteurs et des métadonnées.
-3. `DataToolApi` orchestre les appels et garantit la cohérence du pipeline.
+1. `DataConverter` transforms raw sources into `datachunks`.
+2. `EmbeddingsCreator` enriches these chunks with vectors and metadata.
+3. `DataToolApi` orchestrates the process and ensures pipeline consistency.
 
-Ce découpage garantit une architecture modulaire, réutilisable, et prête à alimenter des systèmes de recherche ou d’interrogation assistée par IA.
-
+This modular setup ensures a reusable, scalable architecture that’s ready to power AI-assisted search or query systems.

@@ -1,77 +1,89 @@
-# 🧠 GenAI Corpus Suite – Système modulaire de gestion et d’exploitation de corpus métier pour l’IA
+# 🧠 GenAI Corpus Suite – Modular System for Managing and Leveraging Domain Corpora for AI
 
-Ce dépôt propose une architecture complète pour **structurer**, **transformer**, **vectoriser**, **interroger** et **personnaliser** des données métier en vue de les exploiter avec des modèles de langage (LLM).
-L’ensemble est conçu de façon **modulaire** pour faciliter la scalabilité, la maintenabilité et l’adaptation à différents cas d’usage.
+This repository provides a full-stack architecture to **structure**, **transform**, **vectorize**, **query**, and **customize** business data for use with language models (LLMs).
+
+Built to be **modular**, **scalable**, and **maintainable**, the GenAI Corpus Suite is designed to address real-world business needs with a strong focus on **efficiency** and **relevance**.
+
+### 🚀 Key Benefits
+
+✅ **Business-grade answers**: Responses are generated using **your domain-specific data** (FAQs, tickets, documents, visuals...) for maximum relevance and accuracy
+💰 **Cost optimization**: Reduces the number of paid LLM API calls via intelligent caching and pre-prompt generation
+⚡ **Faster responses**: Minimizes latency with a smart vector search and reusable response memory
+🧠 **Smarter fine-tuning**: Adapts models using **parameter-efficient techniques** (LoRA, QLoRA…) to cut down training time and compute costs
+
+Whether you’re building a **chatbot**, **semantic search engine**, or an **AI assistant tailored to your business**, GenAI Corpus Suite helps you **scale with control, precision, and impact**.
 
 ---
 
-## 🏗️ Architecture globale – Un pipeline complet pour exploiter l’IA métier
+## 🏗️ Global Architecture – A Complete Pipeline for Leveraging Domain AI
 
-1. 📥 Ingestion et structuration des documents : `CorpusApi`
-2. 🔄 Conversion et vectorisation des données : `DataToolApi`
-3. 🧪 Personnalisation du modèle : `LLMApi`
-4. 💬 Réponse intelligente : `OptimizedAgent`
+1. 📥 Document ingestion and structuring: `CorpusApi`
+2. 🔄 Data conversion and vectorization: `DataToolApi`
+3. 🧪 Model customization: `LLMApi`
+4. 💬 Intelligent answering: `OptimizedAgent`
 
-Chaque brique peut fonctionner **indépendamment** ou en **synergie** avec les autres.
+Each component can work **independently** or in **synergy** with the others.
 
 ![Archi](docs/archi/archi.png)
 
 ---
 
-## ✨ Avantages clés
+## ✨ Key Advantages
 
-✅ Architecture **modulaire** et **extensible**
-☁️ Compatible avec des modèles LLM **locaux ou cloud**
-⚙️ Optimisation des ressources via **embeddings**, **cache** et **fine-tuning allégé**
-🧩 Conçu pour les cas d’usage métiers : **support client**, **recherche documentaire**, **agents conversationnels**…
-
----
-
-## 🤖 1. `OptimizedAgent` – Agent intelligent avec mémoire et contexte
-
-Conçu pour répondre aux requêtes utilisateur de manière rapide et pertinente :
-
-* 🗃️ Recherche dans un **cache vectoriel** (`CachedAgentResponse`) pour réutiliser des réponses validées.
-* 🧠 Génération de **pré-prompts enrichis** (`PrepromptEnhancer`) si aucune réponse pertinente n’est trouvée.
-
-📈 Le système s’adapte dynamiquement et **optimise les appels LLM**.
-
-📄 [Voir la documentation détaillée](docs/archi/GEN_AI.md)
+✅ **Modular** and **extensible** architecture
+☁️ Compatible with **local or cloud-based** LLMs
+⚙️ Resource optimization via **embeddings**, **caching**, and **lightweight fine-tuning**
+🧩 Designed for business use cases: **customer support**, **document retrieval**, **chat agents**...
 
 ---
 
-## 📚 2. `CorpusApi` – Gestion centralisée du corpus métier
+## 🤖 1. `OptimizedAgent` – Smart Agent with Memory and Context
 
-Ce module pilote l’organisation des données textuelles en deux volets :
+Designed to respond to user queries quickly and accurately:
 
-* 📖 **`BaseCorpus`** : ressources linguistiques génériques (glossaire, synonymes, paraphrases).
-* 🧩 **`DomainCorpus`** : prise en charge des documents métier (FAQ, tickets, documents visuels ou techniques), segmentation en chunks, enrichissement, vectorisation.
-* 🗂️ **Sauvegarde des documents bruts** : permet la **reprise**, la **régénération future**, et l’**ajout de liens directs** vers les sources dans les réponses IA.
+* 🗃️ Searches in a **vector cache** (`CachedAgentResponse`) to reuse validated answers.
+* 🧠 Generates **enriched pre-prompts** (`PrepromptEnhancer`) if no relevant answer is found.
 
-📄 [Voir la documentation détaillée](docs/archi/DATA.md)
+📈 The system dynamically adapts and **optimizes LLM calls**.
 
----
-
-## 🧰 3. `DataToolApi` – Transformation et vectorisation de données
-
-Cette API orchestre deux modules essentiels :
-
-* 🔄 **`DataConverter`** : convertit des fichiers bruts (Markdown, Word, images, discussions...) en **datachunks** ou **FAQ** exploitables.
-* 📐 **`EmbeddingsCreator`** : génère des **vecteurs sémantiques** enrichis de métadonnées pour chaque segment.
-
-🔍 Ce pipeline prépare les données pour une **indexation intelligente** ou une **exploitation conversationnelle**.
-
-📄 [Voir la documentation détaillée](docs/archi/TOOLS.md)
+📄 [See the detailed documentation](docs/archi/GEN_AI.md)
 
 ---
 
-## 🧪 4. `LLMApi` – Fine-tuning efficace de modèles de langage
+## 📚 2. `CorpusApi` – Centralized Management of Business Corpus
 
-Ce composant permet d’adapter un LLM à un cas métier donné avec un minimum de ressources :
+This module organizes textual data in two layers:
 
-* 🧠 **`PETFGenerator`** : génère des configurations de fine-tuning allégé (LoRA, QLoRA, AdaLoRA...).
-* 🛠️ **`FineTunedModelGenerator`** : applique ces configurations pour produire un **modèle personnalisé**.
+* 📖 **`BaseCorpus`**: generic linguistic resources (glossary, synonyms, paraphrases).
+* 🧩 **`DomainCorpus`**: supports business documents (FAQs, tickets, visual or technical documents), chunking, enrichment, vectorization.
+* 🗂️ **Raw document storage**: allows for **replay**, **future regeneration**, and **direct link insertion** to sources in AI answers.
 
-💡 Idéal pour créer des modèles **spécialisés**, sans lourde charge computationnelle.
+📄 [See the detailed documentation](docs/archi/DATA.md)
 
-📄 [Voir la documentation détaillée](docs/archi/LLM.md)
+---
+
+## 🧰 3. `DataToolApi` – Data Transformation and Vectorization
+
+This API orchestrates two essential modules:
+
+* 🔄 **`DataConverter`**: converts raw files (Markdown, Word, images, chats...) into usable **data chunks** or **FAQs**.
+* 📐 **`EmbeddingsCreator`**: generates **semantic vectors** enriched with metadata for each segment.
+
+🔍 This pipeline prepares data for **intelligent indexing** or **conversational exploitation**.
+
+📄 [See the detailed documentation](docs/archi/TOOLS.md)
+
+---
+
+## 🧪 4. `LLMApi` – Efficient Fine-Tuning of Language Models
+
+This component allows a LLM to be tailored to a business use case with minimal resources:
+
+* 🧠 **`PETFGenerator`**: generates configurations for lightweight fine-tuning (LoRA, QLoRA, AdaLoRA...).
+* 🛠️ **`FineTunedModelGenerator`**: applies these configurations to produce a **customized model**.
+
+💡 Ideal for building **specialized models** without heavy computational loads.
+
+📄 [See the detailed documentation](docs/archi/LLM.md)
+
+---

@@ -1,21 +1,21 @@
-### 🧠 1. Agent Central : `OptimizedAgent`
+### 🧠 1. Central Agent: `OptimizedAgent`
 
-`OptimizedAgent` est l'orchestrateur principal chargé de répondre aux requêtes utilisateurs. Il suit une logique d’optimisation des appels aux modèles de langage en s’appuyant sur deux stratégies :
+`OptimizedAgent` is the main orchestrator responsible for handling user queries. It follows an optimization strategy for language model calls based on two core tactics:
 
-* **Réutilisation de réponses validées** via un cache vectoriel (`CachedAgentResponse`)
-* **Enrichissement de la requête** via la génération de pré-prompts (`PrepromptEnhancer`)
+* **Reuse of validated answers** via a vector cache (`CachedAgentResponse`)
+* **Query enrichment** through contextual pre-prompt generation (`PrepromptEnhancer`)
 
 ---
 
-### 🧾 2. `PrepromptEnhancer` : Générateur de Pré-prompts Contextuels
+### 🧾 2. `PrepromptEnhancer`: Contextual Pre-prompt Generator
 
-Ce module est activé si aucune réponse pertinente n’est trouvée dans le cache. Il :
+This module is triggered when no relevant response is found in the cache. It:
 
-* Récupère la requête originale
-* Identifie les `k` chunks les plus pertinents (par similarité cosinus) dans le `DomainCorpus`
-* Structure un prompt enrichi avec du contexte métier
+* Retrieves the original query
+* Identifies the top `k` most relevant chunks (based on cosine similarity) from the `DomainCorpus`
+* Structures an enriched prompt with domain-specific context
 
-Exemple de structuration de prompt :
+Example of prompt structure:
 
 ```plaintext
 You are an expert in [domain].
@@ -27,29 +27,28 @@ Question: [user_query]
 Respond clearly and precisely.
 ```
 
-Ce préprompt est ensuite soumis au modèle LLM sélectionné pour générer une réponse optimisée.
+This pre-prompt is then submitted to the selected LLM to generate an optimized response.
 
 ---
 
-### 🗃️ 3. `CachedAgentResponse` : Mémoire de Réponses Validées
+### 🗃️ 3. `CachedAgentResponse`: Validated Answer Memory
 
-Ce module agit comme un cache vectoriel des réponses précédemment validées. Il :
+This module functions as a vector cache of previously validated responses. It:
 
-* Cherche des similarités de requête pour réutiliser une réponse existante
-* Stocke les nouvelles réponses validées avec leurs embeddings
+* Searches for query similarities to reuse an existing response
+* Stores newly validated responses along with their embeddings
 
-Ce mécanisme améliore la réactivité du système et évite des appels coûteux ou redondants au modèle LLM.
+This mechanism improves system responsiveness and avoids costly or redundant LLM calls.
 
 ---
 
-### 🔄 4. Pipeline Global et Intelligence Adaptative
+### 🔄 4. Global Pipeline and Adaptive Intelligence
 
-1. L'utilisateur envoie une requête (`ask`)
-2. `OptimizedAgent` vérifie l’existence d’une réponse similaire dans `CachedAgentResponse`
-3. Si aucune réponse satisfaisante n’est trouvée :
+1. The user submits a query (`ask`)
+2. `OptimizedAgent` checks for similar responses in `CachedAgentResponse`
+3. If no satisfying match is found:
 
-   * Il active `PrepromptEnhancer` pour créer un prompt enrichi
-   * Le prompt est soumis à un modèle choisi
-   * La réponse peut être validée et sauvegardée via `validate-response`
-4. Les réponses validées sont vectorisées et ajoutées au cache pour de futures similarités
-
+   * `PrepromptEnhancer` is activated to build an enriched prompt
+   * The prompt is sent to the selected model
+   * The response can be validated and saved using `validate-response`
+4. Validated responses are vectorized and added to the cache for future reuse
